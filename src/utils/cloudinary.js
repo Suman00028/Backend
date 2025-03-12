@@ -1,5 +1,7 @@
+// Cloudinary stores the files(of any type) for us - cloud based service 
+
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import fs from "fs";    // fs - file system
 
 // Configuration
 cloudinary.config({ 

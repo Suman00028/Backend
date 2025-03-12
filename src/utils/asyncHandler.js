@@ -1,10 +1,15 @@
 // First method of writing a wrapper
 
 // const asyncHandler = (requestHandler) => {
-//     (req, res, next) => {
+//     return (req, res, next) => {
 //         Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
 //     }
 // }
+
+// No need for "return" statement 
+// const asyncHandler = (requestHandler) => (req, res, next) => {
+//         Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
+//}
 
 
 // Second method of writing a wrapper
