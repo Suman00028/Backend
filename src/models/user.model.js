@@ -61,7 +61,7 @@ userSchema.methods.isPasswordCorrect = async function (password){
 
 // Generating JWTs(Json Web Tokens) - Access Token and Refresh Token
 userSchema.methods.generateAccessToken = function() {
-    // jwt.sing() method requires these things -> jwt.sign(payload, secretKey, options)
+    // jwt.sign() method requires these arguments -> jwt.sign(payload, secretKey, options)
     // payload -> object, options -> object
     return jwt.sign(
         {
