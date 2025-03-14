@@ -3,7 +3,6 @@ import ApiError from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import { response } from "express";
 
 // actual logic to be implemented on the data coming via routes 
 const registerUser = asyncHandler( async (req, res) => {
@@ -17,9 +16,13 @@ const registerUser = asyncHandler( async (req, res) => {
     // check for user creation
     // return response
 
+    // received files
+    // console.log("Received files", req.files)
+
     // get user details from frontend
     const {username, email, fullName, password} = req.body;
-    console.log("email: ", email);
+    // console.log("request body", req.body);
+    // console.log("email: ", email);
 
     // validation - check if any field is empty or not
     if(
@@ -29,7 +32,7 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     // check if user already exists: username, email
-    const existedUser = User.find({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     });
 
@@ -38,8 +41,16 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     // check for images, check for avatar
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+
+    // another way to check if it exists or not
+    // let coverImageLocalPath;
+    // if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+    //     coverImageLocalPath = req.files.coverImage[0].path;
+    // }
+
+    // console.log("Uploaded files", req.files);
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar is required");
@@ -65,6 +76,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
     // remove password and refresh token field from response
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
+    // console.log("createdUser", createdUser);
 
     // check for user creation
     if(!createdUser){

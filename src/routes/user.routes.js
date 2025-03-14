@@ -15,4 +15,5 @@ userRouter.route("/register").post(upload.fields([
     }
 ]), registerUser);
 
+
 export default userRouter;
